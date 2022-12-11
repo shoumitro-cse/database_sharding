@@ -1,0 +1,15 @@
+
+What is a MongoDB arbiter?
+Arbiters are mongod instances that are part of a replica set but do not hold data (i.e. do not provide data redundancy). They can, however, participate in elections. Arbiters have minimal resource requirements and do not require dedicated hardware.
+
+
+What is the main purpose of the arbiter?
+An important form of arbiter is used in asynchronous circuits to select the order of access to a shared resource among asynchronous requests. Its function is to prevent two operations from occurring at once when they should not.
+
+Its necessary to have a arbiter in a replication for the below reasons:
+Replication is more reliable if it has odd number of replica sets. Incase if there is even number of replica sets its better to add a arbiter in the replication.
+Arbiters do not hold data in them and they are just to vote in election when there is any node failure.
+Arbiter is a light weight process they do not consume much hardware resources.
+Arbiters just exchange the user credentials data between the replica set which are encrypted.
+Vote during elections,hearbeats and configureation data are not encrypted while communicating in between the replica sets.
+It is better to run arbiter on a separate machine rather than along with any one of the replica set to retain high availability.

@@ -1,0 +1,27 @@
+# config server
+docker-compose exec config01 bash 
+mongosh --port 27017
+
+docker-compose exec config02 bash 
+mongosh --port 27017
+
+# sharding server
+docker-compose exec shard01a bash 
+mongosh --port 27018
+
+docker-compose exec shard02a bash 
+mongosh --port 27019
+
+docker-compose exec shard03a bash 
+mongosh --port 27020
+
+docker-compose exec shard03b bash 
+mongosh --port 27020
+
+# router server
+docker-compose exec router bash 
+mongosh --port 27017
+
+
+
+

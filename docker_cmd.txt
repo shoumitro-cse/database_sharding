@@ -1,0 +1,47 @@
+# remove container, image
+docker-compose down -v --rmi all --remove-orphans
+docker volume prune
+
+
+# change image name and tag
+docker tag <image id> mynewtag:version
+docker tag 67d177c5cc29 mynewtag:1.1
+docker build -t mytag:version
+
+
+# for network
+docker network --help
+docker network ls
+docker volume create my_network0 
+docker volume rm my_network0 my_network1 # Remove one or more networks
+docker network prune # Remove all unused networks
+
+docker network connect NETWORK CONTAINER
+docker network connect 4a06639d4d71 mongo1
+docker network connect database_sharding_mongo-cluster-net mongo1
+
+
+# for volume
+docker volume --help
+docker volume ls # List volumes
+docker volume create my_volume0 
+docker volume rm my_volume0 my_volume1 # Remove one or more volumes
+docker volume prune # Remove all unused volumes
+
+
+# for container
+docker container --help
+docker container prune
+docker container top mongo1 # Display the running processes or CMD of a container
+# Display a live stream of container(s) resource usage(like ram, cpu, memory) statistics
+docker container stats mongo1 
+docker container run mongo
+docker container port mongo1 # List port mappings or a specific mapping for the container
+docker container logs mongo1
+docker container export mongo1 -o ab.txt
+docker container exec mongo1 mongod --replSet my-mongo-set # cmd
+
+# Copy files/folders between a container and the local filesystem
+docker container cp mongo1:/bin docker.txt
+
+

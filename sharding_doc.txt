@@ -1,0 +1,207 @@
+https://www.youtube.com/playlist?list=PL5O1Up7YGXq-RCkJf4YeAIdzAmDqJ5FXN
+
+
+# mongo db
+https://www.youtube.com/watch?v=mjSNKjTzeao
+https://www.mongodb.com/basics/scaling
+https://www.mongodb.com/databases/scaling
+https://www.mongodb.com/docs/manual/tutorial/deploy-shard-cluster/
+
+# replica
+https://www.youtube.com/watch?v=gChzfhVGqp8
+https://www.youtube.com/watch?v=liocKBCVJyw&list=PLdHg5T0SNpN27dJ4aPVxKAw_zjcjsvO06&index=3
+
+sudo systemctl start mongodb
+
+# docker
+sudo docker run -d -p 27017:27017 -v ~/mongodb_data:/data/db mongo:latest
+sudo docker run -d -p 27017:27017 -v ~/mongodb_data:/data/db --name mongo_db mongo:latest
+sudo docker run -d -p 27018:27017 -v ~/mongodb_data:/data/db --name mongo_db mongo:latest
+docker exec -it mongo_db bash
+
+  
+mongo mongodb://127.0.0.1:27018/
+mongo mongodb://127.0.0.1:26050
+mongo mongodb://127.0.0.1:27017
+
+# mongodb shell
+mongosh --port 26050
+mongosh --port 26051
+mongosh --port 26052
+
+
+mongod --configsvr --dbpath /data/configdb1 --port 27019
+mongod --configsvr --dbpath /data/configdb2 --port 27019 
+mongod --configsvr --dbpath /data/configdb3 --port 27019
+mongod --shardsvr --port 27019 --dbpath /data/shard1
+
+
+config = {
+	_id: "cfg", 
+	members: [
+	   { _id: 0, host: "localhost:26050"},
+	   { _id: 1, host: "localhost:26051"},
+	   { _id: 2, host: "localhost:26052"}
+	]
+}
+rs.initiate(config)
+
+
+mongod --configsvr --dbpath cgf0 --port 26050 --fork --logpath log.cfg0 --replSet cfg --config /home/shoumitro/.cache/yay/mongodb-bin/pkg/mongodb-bin/etc/mongodb.conf
+
+
+# replica
+https://docs.rocket.chat/quick-start/environment-configuration/mongodb-configuration/mongo-replicas
+# https://www.mongodb.com/docs/manual/tutorial/deploy-replica-set/
+
+/usr/bin/mongod --quiet --config mono_config.conf
+
+##################### config started ##################################
+mkdir cfg0 cfg1 cfg2
+mkdir a0 a1 a2  b0 b1 b2 c0 c1 c2 d0 d1 d2 
+
+# for config server (skip --fork option if it will get an error)
+mongod --configsvr --dbpath cgf0 --port 26050 --fork --logpath log.cfg0 --replSet cfg
+mongod --configsvr --dbpath cgf1 --port 26051 --fork --logpath log.cfg1 --replSet cfg
+mongod --configsvr --dbpath cgf2 --port 26052 --fork --logpath log.cfg2 --replSet cfg
+
+# Here, need 2 different terminal
+# one Terminal
+sudo mongod --port 26050
+sudo mongod --port 26051
+sudo mongod --port 26052
+
+# another Terminals
+mongo --port 26050
+mongo --port 26051
+mongo --port 26052
+
+
+# add config
+mongo --port 26050
+rs.initiate()
+rs.add("localhost:26051")
+rs.add("localhost:26052")
+rs.status()
+exit
+
+
+# for sharing
+mongod --shardsvr --replSet a --dbpath a0 --port 26000 --fork --logpath log.a0
+mongod --shardsvr --replSet a --dbpath a1 --port 26001 --fork --logpath log.a1
+mongod --shardsvr --replSet a --dbpath a2 --port 26002 --fork --logpath log.a2
+
+
+mongod --shardsvr --replSet b --dbpath b0 --port 26100 --fork --logpath log.b0
+mongod --shardsvr --replSet b --dbpath b1 --port 26101 --fork --logpath log.b1
+mongod --shardsvr --replSet b --dbpath b2 --port 26102 --fork --logpath log.b2
+
+
+mongod --shardsvr --replSet c --dbpath c0 --port 26200 --fork --logpath log.c0
+mongod --shardsvr --replSet c --dbpath c1 --port 26201 --fork --logpath log.c1
+mongod --shardsvr --replSet c --dbpath c2 --port 26202 --fork --logpath log.c2
+
+
+mongod --shardsvr --replSet d --dbpath d0 --port 26300 --fork --logpath log.d0
+mongod --shardsvr --replSet d --dbpath d1 --port 26301 --fork --logpath log.d1
+mongod --shardsvr --replSet d --dbpath d2 --port 26302 --fork --logpath log.d2
+
+
+# running server check
+ps -ef | grep mongod|grep a0
+ps -ef | grep mongod|grep a1
+ps -ef | grep mongod|grep a2
+
+
+ps -ef | grep mongod|grep b0
+ps -ef | grep mongod|grep b1
+ps -ef | grep mongod|grep b2
+
+ps -ef | grep mongod|grep c0
+ps -ef | grep mongod|grep d0
+
+
+# for a replSet
+mongo --port 26000
+rs.initiate()
+rs.add("localhost:26001")
+rs.add("localhost:26002")
+rs.status()
+exit
+
+
+# for b replSet
+mongo --port 26100
+rs.initiate()
+rs.add("localhost:26101")
+rs.add("localhost:26102")
+rs.status()
+exit
+
+
+# for c replSet
+mongo --port 26200
+rs.initiate()
+rs.add("localhost:26201")
+rs.add("localhost:26202")
+rs.status()
+exit
+
+
+# for d replSet
+mongo --port 26300
+rs.initiate()
+rs.add("localhost:26301")
+rs.add("localhost:26302")
+rs.status()
+exit
+
+
+# mongos instance 
+mongos --configdb "cfg/localhost:26050,localhost:26051,localhost:26052" --port 26061 --fork --logpath log.mongos1
+mongos --configdb "cfg/localhost:26050,localhost:26051,localhost:26052" --port 26062 --fork --logpath log.mongos2
+
+
+mongo --port 26061
+sh.addShard("a/localhost:26000")
+sh.addShard("b/localhost:26100")
+sh.addShard("c/localhost:26200")
+sh.addShard("d/localhost:26300")
+sh.status()
+
+show dbs
+sh.enableSharding("my_db")
+sh.status()
+
+show collections
+sh.shardCollection("my_db.sales", {_id:1})
+sh.status()
+
+for(i=0;i<10000;i++) { db.sales.insert({"title": "test", valus:i}) }
+sh.status()
+
+db.sales.insert({"title": "test"})
+db.getLastErrorObj()
+db.sales.find()
+
+
+use config
+db.shards.find()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
