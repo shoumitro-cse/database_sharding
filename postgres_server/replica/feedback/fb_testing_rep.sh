@@ -56,8 +56,7 @@ psql 'postgres://postgres:1234@0.0.0.0:5432/postgres?sslmode=disable'
 psql -h 0.0.0.0 -p 5432 -U postgres
 
 
-sudo docker stop replica0_db replica1_db replica2_db  
-sudo docker rm replica0_db replica1_db replica2_db  
+sudo docker stop replica0_db replica1_db replica2_db  && sudo docker rm replica0_db replica1_db replica2_db  
 sudo docker restart replica0_db replica1_db replica2_db  
 
 

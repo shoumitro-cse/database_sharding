@@ -1,0 +1,25 @@
+version: '3.8'
+
+# cp -r $(pwd)/fb_data $(pwd)/replica_data
+# sudo docker-compose up --build 
+# sudo docker exec -it postgres_replica bash
+services:
+  feedback_db:
+    container_name: postgres_replica
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 5436:5432
+    #volumes:
+    #  - ./replica_data:/var/lib/postgresql/data
+    #environment:
+    #  - POSTGRES_USER=postgres
+    #  - POSTGRES_PASSWORD=1234
+    #extra_hosts:
+    #  - "host.docker.internal:host-gateway"
+
+
+    
+    
