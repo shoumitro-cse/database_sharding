@@ -5,7 +5,8 @@ ALTER USER postgres WITH PASSWORD '1234';
 
 sudo nano /etc/postgresql/15/main/pg_hba.conf
 host    replication    feedback_rep     0.0.0.0/0               trust # any ip addrees(must required)
-#host    replication    feedback_rep     127.0.0.1/32            trust # only localhost
+host    replication    feedback_rep     127.0.0.1/32            trust # only localhost
+host    all            all              0.0.0.0/0               md5
 
 sudo nano /etc/postgresql/15/main/postgresql.conf
 wal_level = replica
