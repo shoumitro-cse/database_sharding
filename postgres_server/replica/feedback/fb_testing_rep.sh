@@ -23,11 +23,6 @@ pw: mektec_@1%^8$
 # must create this dir
 mkdir $(pwd)/fb_data/standby.signal
 
-# for main or replica both must use it
-sudo nano $(pwd)/fb_data/postgresql.conf
-wal_level = replica
-max_wal_senders =  10 #How many secondaries can connect 
-
 # it's only for standby or replica database and must comment for main database
 nano ./fb_data/postgresql.conf
 primary_conninfo = 'host=host.docker.internal port=5432 user=feedback_rep password=mektec_@1%^8$'
@@ -45,10 +40,10 @@ sudo rm -rf $(pwd)/replica2_data
 sudo docker run --restart always --name replica0_db --add-host=host.docker.internal:host-gateway -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234  -v $(pwd)/replica0_data:/var/lib/postgresql/data -p 5433:5432 -it postgres:15.1
 sudo docker restart replica0_db
 
-sudo docker run --restart always --name replica1_db --add-host=host.docker.internal:host-gateway -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234  -v $(pwd)/replica1_data:/var/lib/postgresql/data -p 5434:5432 -it postgres:15.1
+sudo docker run --restart always --name replica1_db --add-host=host.docker.internal:host-gateway -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234  -v $(pwd)/replica1_data:/var/lib/postgresql/data -p 5434:5432 -d postgres:15.1
 sudo docker restart replica1_db
  
-sudo docker run --restart always --name replica2_db --add-host=host.docker.internal:host-gateway -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234  -v $(pwd)/replica2_data:/var/lib/postgresql/data -p 5435:5432 -it postgres:15.1
+sudo docker run --restart always --name replica2_db --add-host=host.docker.internal:host-gateway -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234  -v $(pwd)/replica2_data:/var/lib/postgresql/data -p 5435:5432 -d postgres:15.1
 sudo docker restart replica2_db
 
 
