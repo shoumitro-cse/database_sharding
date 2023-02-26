@@ -1,0 +1,13 @@
+[mysqld]
+
+pid-file = /var/run/mysqld/mysqld.pid
+socket = /var/run/mysqld/mysqld.sock
+bind-address = 0.0.0.0  
+datadir = /var/lib/mysql
+#log_bin = /var/log/mysql/mysql-bin.log
+server-id = 2
+read_only = 1
+max_binlog_size = 500M
+slow_query_log   = 1
+
+
