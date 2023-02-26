@@ -1,6 +1,7 @@
 # https://stackoverflow.com/questions/28196440/what-are-the-differences-between-a-node-a-cluster-and-a-datacenter-in-a-cassand
 
-# Cassandra cluster
+# Cassan
+dra cluster
 A node is a single machine that runs Cassandra. A collection of nodes holding similar data are grouped in what is known as a "ring" or cluster.
 
 Sometimes if you have a lot of data, or if you are serving data in different geographical areas, it makes sense to group the nodes of your cluster into different data centers. A good use case of this is for an e-commerce website, which may have many frequent customers on the east coast and the west coast. That way your customers on the east coast connect to your east coast DC and your west coast connect to your west coast DC  for faster performance. but ultimately have access to the same dataset both DCs are in the same cluster.
@@ -145,6 +146,11 @@ UN  172.21.0.2  173.1 KiB   16      49.2%             b6245b89-19eb-49ab-ba89-c0
 UN  172.21.0.3  168.08 KiB  16      77.1%             5f398b39-b04d-4ab5-8a35-19c2cd737f8c  rack1
 
 
+
+
+
+# multiple dc 
+https://kayaerol84.medium.com/cassandra-cluster-management-with-docker-compose-40265d9de076
 
 
 
