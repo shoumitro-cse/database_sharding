@@ -153,7 +153,34 @@ UN  172.21.0.3  168.08 KiB  16      77.1%             5f398b39-b04d-4ab5-8a35-19
 https://kayaerol84.medium.com/cassandra-cluster-management-with-docker-compose-40265d9de076
 
 
+docker-compose -f dc.yml up --build -d
 
+docker exec -it DSE-6_node1 bash
+docker exec -it DSE-6_node2 bash
+docker exec -it DSE-6_node3 bash
 
+nodetool status
 
+cqlsh
+DESC keyspaces;
+CREATE KEYSPACE musicDb WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : '3'};
 
+USE musicDb;
+CREATE TABLE musics_by_genre (
+  genre VARCHAR,
+  performer VARCHAR,
+  year INT,
+  title VARCHAR,
+  PRIMARY KEY ((genre), performer, year, title)
+) WITH CLUSTERING ORDER BY (performer ASC, year DESC, title ASC);
+DESC TABLE musics_by_genre;
+INSERT INTO musics_by_genre (genre, performer, year, title) VALUES ('Rock', 'Nirvana', 1991, 'Smells Like Teen Spirit');
+
+ CONSISTENCY ALL;
+SELECT * FROM musics_by_genre WHERE genre='Rock';
+# NoHostAvailable
+
+# Nothing returns. Now set the consistency level to zero
+CONSISTENCY ONE;
+SELECT * FROM musics_by_genre WHERE genre='Rock';
+# result show
