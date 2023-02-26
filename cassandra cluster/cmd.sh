@@ -1,12 +1,17 @@
 # https://stackoverflow.com/questions/28196440/what-are-the-differences-between-a-node-a-cluster-and-a-datacenter-in-a-cassand
 
 # Cassandra cluster
+A node is a single machine that runs Cassandra. A collection of nodes holding similar data are grouped in what is known as a "ring" or cluster.
+
+Sometimes if you have a lot of data, or if you are serving data in different geographical areas, it makes sense to group the nodes of your cluster into different data centers. A good use case of this is for an e-commerce website, which may have many frequent customers on the east coast and the west coast. That way your customers on the east coast connect to your east coast DC and your west coast connect to your west coast DC  for faster performance. but ultimately have access to the same dataset both DCs are in the same cluster.
+
+
 # The hierarchy of elements in Cassandra is:
 Cluster
  Data center(s)
    Rack(s)
 	 Server(s)
-	   Node (more accurately, a vnode)
+	   Node #(more accurately, a vnode)
 	   
 A Cluster is a collection of Data Centers.
 A Data Center is a collection of Racks.
